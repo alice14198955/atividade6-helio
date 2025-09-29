@@ -1,0 +1,18 @@
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_user"
+        android:icon="@drawable/ic_home"
+        android:title="@string/txthome" />
+
+    <item
+        android:id="@+id/nav_people"
+        android:icon="@drawable/ic_people"
+        android:title="@string/txtpeople" />
+
+    <item
+        android:id="@+id/nav_product"
+        android:icon="@drawable/ic_product2"
+        android:title="@string/txtproduct" />
+
+</menu>
