@@ -1,58 +1,32 @@
 package com.alice.aliceatividade
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import com.alice.aliceatividade.database.UserDatabase
 import com.alice.aliceatividade.databinding.ActivityMainBinding
-import com.alice.aliceatividade.model.User
-import com.alice.aliceatividade.model.Product
-
+import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val db = Room.databaseBuilder(applicationContext, UserDatabase::class.java, "user-database")
-            .allowMainThreadQueries()
-            .build()
-
-        val novoUsuario = User(name = "Alice", email = "alice@gmail.com")
-        db.userDao().insert(novoUsuario)
-
-        val novoProduto = Product(name = "Notebook", price = 3500.0)
-        db.productDao().insert(novoProduto)
-
-        val users = db.userDao().getAllUsers()
-        for (user in users) {
-            Log.d("User", "${user.id}: ${user.name} - ${user.email}")
+        replaceFragment(HomeFragment())
+        binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_user -> replaceFragment(HomeFragment())
+                R.id.nav_people -> replaceFragment(UserFragment())
+                R.id.nav_product -> replaceFragment(ProductFragment())
+                else -> false
+            }
         }
+    }
 
-        val products = db.productDao().getAllProducts()
-        for (product in products) {
-            Log.d("Product", "${product.id}: ${product.name} - R$ ${product.price}")
-        }
-        replaceFragment(fragment = HomeFragment())
-        //binding.
-
-   }
-
-    private fun replaceFragment(fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment): Boolean {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 android.R.anim.slide_in_left,
@@ -60,5 +34,6 @@ class MainActivity : AppCompatActivity() {
             )
             .replace(R.id.fragmentContainerView, fragment)
             .commit()
+        return true
     }
 }

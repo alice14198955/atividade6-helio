@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.sqlite.bundled)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
 
 
 }
